@@ -1,0 +1,123 @@
+mmatila@melkki:~/ot_viikko1/tiedostoja$ git log --stat | cat
+commit 86c3420d4d3a7174ef1dc661e29211c152d636a0
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 17:00:19 2020 +0200
+
+    poisto ja nimenmuutos
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 18aaa8286e21c052eb528a35f489e16da18a975e
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 16:57:21 2020 +0200
+
+    tiedostot luotu
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 91fef57dd59eb14f0733dbe10363433947ef65fb
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 16:49:24 2020 +0200
+
+    addattu p:llä
+
+ eka.txt    | 2 +-
+ kolmas.txt | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+commit 42e8a552beee73ca0e5924c010c734e0cc72cf87
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 16:47:33 2020 +0200
+
+    commit
+
+ eka.txt | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+commit 13dfa56e24c6db9a064f6f5cca10721623f80769
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 16:47:07 2020 +0200
+
+    nimi muutettu
+
+ tiedosto.txt | 6 ------
+ 1 file changed, 6 deletions(-)
+
+commit 25030c0c9dc42409b6ff5d16cfc7feb83528e7df
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 16:45:27 2020 +0200
+
+    poistettu
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 0ac3185f84b9fda43c52d50de53c2b4a56716b5e
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 16:42:23 2020 +0200
+
+    tekstiä lisätty ja poistettu
+
+ tiedosto.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+commit 3413c5dd32cb103b96c1ed57d62e2f494cb2f458
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 16:41:08 2020 +0200
+
+    Lorem ipsumia lisätty
+
+ tiedosto.txt | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+commit c4bc78646a83adffaf0f0727c11630d8573764a1
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 16:24:30 2020 +0200
+
+    stuff ja file.txt lisätty
+
+ stuff/file.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 2270fb6cca0413d90544c09ba28883084db75305
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 16:23:42 2020 +0200
+
+    muokkaukset tehty
+
+ tiedosto.txt | 2 +-
+ toinen.txt   | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+commit 6851d03b7c68998d06e56d3bb7cf4da1c4b7a3bd
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 16:22:38 2020 +0200
+
+    kolmas.txt lisätty
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 54ef8b4267931ce68af3c240b2c0592cba4fc4d0
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 16:18:11 2020 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit bef8945fd006d17fb683f9acd7f1d7f8f53c5a56
+Author: Manu Matila <manu.matila1997@gmail.com>
+Date:   Tue Oct 27 16:14:37 2020 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
