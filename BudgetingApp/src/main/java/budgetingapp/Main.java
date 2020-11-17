@@ -5,12 +5,15 @@
  */
 package budgetingapp;
 
+import java.sql.SQLException;
+
 /**
  *
  * @author mmatila
  */
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
+        SQLiteDB db = new SQLiteDB();
         App app = new App();
         app.main(args);
     }
