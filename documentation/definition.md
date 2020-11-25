@@ -14,12 +14,12 @@ In the beginning there's only going to be one user role: *standard user.*
 
 **User must be signed in to use the app's features**  
 - Signing up (register form)
-  - unique username
-  - password
+  - unique username :heavy_check_mark:
+  - password :heavy_check_mark:
   - (optional) profile picture?
 - Signing in
   - separate login screen
-  - error if username doesn't exist or password is incorrect
+  - error if username doesn't exist or password is incorrect :heavy_check_mark:
 
 ### Expense tracking  
 
