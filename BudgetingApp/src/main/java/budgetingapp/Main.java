@@ -5,6 +5,7 @@
  */
 package budgetingapp;
 
+import budgetingapp.ui.TUI;
 import java.sql.SQLException;
 
 /**
@@ -12,9 +13,10 @@ import java.sql.SQLException;
  * @author mmatila
  */
 public class Main {
-    public static void main(String[] args) throws SQLException {
-        SQLiteDB db = new SQLiteDB();
-        App app = new App();
-        app.main(args);
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        TUI textUserInterface = new TUI();
+        textUserInterface.run();
+//        App app = new App();
+//        app.Main(args);
     }
 }
