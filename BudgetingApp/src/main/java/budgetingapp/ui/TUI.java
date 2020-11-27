@@ -5,8 +5,10 @@
  */
 package budgetingapp.ui;
 
+import budgetingapp.dao.CategoryDao;
 import budgetingapp.dao.Database;
 import budgetingapp.dao.UserDao;
+import budgetingapp.domain.Category;
 import budgetingapp.domain.User;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -20,11 +22,13 @@ public class TUI {
     private Scanner scanner;
     private Database db;
     private UserDao userDao;
+    private CategoryDao categoryDao;
 
     public TUI() throws SQLException {
         this.scanner = new Scanner(System.in);
         this.db = new Database("database.db");
         this.userDao = new UserDao(db.connect());
+        this.categoryDao = new CategoryDao(db.connect());
     }
 
     public void run() {
@@ -42,6 +46,10 @@ public class TUI {
                     break;
                 case "2":
                     handleCaseTwo();
+                    printInfo();
+                    break;
+                case "3":
+                    handleCaseThree();
                     printInfo();
                     break;
             }
@@ -73,11 +81,19 @@ public class TUI {
             System.out.println("Username doesn't exist");
         }
     }
+    
+    public void handleCaseThree() {
+        System.out.print("\nName of the category: ");
+        String name = scanner.nextLine();
+        Category newCategory = new Category(name);
+        System.out.println("\n" + categoryDao.add(newCategory));
+    }
 
     public void printInfo() {
         System.out.println("\nWhat would you like to do? (1-2)");
         System.out.println("\t 1. Create new user");
-        System.out.println("\t 2. Delete an existing user\n");
+        System.out.println("\t 2. Delete an existing user");
+        System.out.println("\t 3. Create a new expense category\n");
         System.out.print("Enter: ");
     }
 }

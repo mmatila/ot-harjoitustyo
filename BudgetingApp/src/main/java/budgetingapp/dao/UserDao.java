@@ -21,12 +21,36 @@ public class UserDao {
     private Connection db;
     private Statement stmt;
     private PreparedStatement ps;
+    private ResultSet rs;
 
     /**
      * Constructor
      */
     public UserDao(Connection db) {
         this.db = db;
+    }
+
+    public User getUserById(int id) {
+        User user = null;
+
+        try {
+            ps = db.prepareStatement("SELECT * FROM user WHERE id=(?)");
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                user = new User(rs.getString("name").split(" ")[0],
+                        rs.getString("name").split(" ")[1],
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getInt("balance")
+                );
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        return user;
     }
 
     /**
@@ -37,7 +61,7 @@ public class UserDao {
      */
     public String add(User user) {
         String message = "";
-        
+
         try {
             ps = db.prepareStatement("INSERT INTO user (name, username, password, balance) VALUES (?, ?, ?, ?);");
             ps.setString(1, user.getFullName());
@@ -63,17 +87,35 @@ public class UserDao {
         try {
             ps = db.prepareStatement("SELECT * FROM user WHERE username=(?)");
             ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-            
+            rs = ps.executeQuery();
+
             while (rs.next()) {
                 user = new User(rs.getString("name").split(" ")[0], rs.getString("name").split(" ")[1], rs.getString("username"), rs.getString("password"), rs.getInt("balance"));
             }
-            
+
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
 
         return user;
+    }
+
+    public int getIdByUsername(String username) {
+        int id = 0;
+        try {
+            ps = db.prepareStatement("SELECT id FROM user WHERE username=(?)");
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        return id;
     }
 
     /**
@@ -84,7 +126,7 @@ public class UserDao {
      */
     public String delete(User user) {
         String message = "";
-        
+
         try {
             ps = db.prepareStatement("DELETE FROM user WHERE username=(?)");
             ps.setString(1, user.getUsername());

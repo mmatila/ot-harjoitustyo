@@ -8,11 +8,11 @@ import budgetingapp.dao.Database;
 import budgetingapp.dao.UserDao;
 import budgetingapp.domain.User;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -70,6 +70,16 @@ public class UserTest {
     public void userGetsAddedToDatabase() {
         User user = new User(firstName, lastName, username, password, balance);
         assertEquals("User " + username + " created successfully", userDao.add(user));
+    }
+    
+    @Test
+    public void getUserByIdWorksProperly() {
+        User user = new User(firstName, lastName, "username1", password, balance);
+        User user2 = new User(firstName, lastName, "username2", password, balance);
+        userDao.add(user);
+        userDao.add(user2);
+        assertEquals("username1", userDao.getUserById(1).getUsername());
+        assertEquals("username2", userDao.getUserById(2).getUsername());
     }
     
     @Test

@@ -5,6 +5,8 @@
  */
 package budgetingapp.domain;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author mmatila
@@ -16,6 +18,7 @@ public class User {
     private String username;
     private String password; // This isn't encrypted for now
     private int balance;
+    private ArrayList<Expense> expenses;
     
     /**
      * Constructor
@@ -29,6 +32,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.balance = balance;
+        this.expenses = new ArrayList<>();
     }
     
     /**
