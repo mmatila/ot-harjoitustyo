@@ -23,9 +23,9 @@ In the beginning there's only going to be one user role: *standard user.*
 
 ### Expense tracking  
 
-- Adding new expenses and categorizing them
+- Adding new expenses and categorizing them :heavy_check_mark:
   - eg. entertainment, food, transportation...
-  - additional information: "Spotify subscription" or "groceries"
+  - additional information: "Spotify subscription" or "groceries" :heavy_check_mark:
   
 ### Savings tracking  
 
