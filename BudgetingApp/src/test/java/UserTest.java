@@ -38,7 +38,7 @@ public class UserTest {
         testDatabase = new Database(databaseName);
         db = testDatabase.connect();
         testDatabase.createSchema();
-        userDao = new UserDao(db);
+        userDao = new UserDao(db, testDatabase);
         firstName = "Jane";
         lastName = "Doe";
         username = "username";

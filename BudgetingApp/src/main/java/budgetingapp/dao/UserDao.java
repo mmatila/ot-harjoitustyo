@@ -22,12 +22,14 @@ public class UserDao {
     private Statement stmt;
     private PreparedStatement ps;
     private ResultSet rs;
+    private Database database;
 
     /**
      * Constructor
      */
-    public UserDao(Connection db) {
+    public UserDao(Connection db, Database database) {
         this.db = db;
+        this.database = database;
     }
 
     public User getUserById(int id) {
@@ -51,6 +53,22 @@ public class UserDao {
         }
 
         return user;
+    }
+    
+    public int getUserId(User user) {
+        int id = 0;
+        try {
+            ps = db.prepareStatement("SELECT * FROM user WHERE username=(?)");
+            ps.setString(1, user.getUsername());
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            
+        }
+        
+        return id;
     }
 
     /**
@@ -138,5 +156,9 @@ public class UserDao {
         }
 
         return message;
+    }
+    
+    public void updateDaos() {
+        
     }
 }

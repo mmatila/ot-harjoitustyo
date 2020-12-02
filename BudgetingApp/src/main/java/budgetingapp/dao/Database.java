@@ -20,6 +20,9 @@ public class Database {
 
     private Connection db;
     private String databaseName;
+    public ExpenseDao expenseDao;
+    public UserDao userDao;
+    public CategoryDao categoryDao;
 
     /**
      * Constructor for the actual database
@@ -29,6 +32,9 @@ public class Database {
     public Database(String databaseName) throws SQLException {
         this.databaseName = databaseName;
         this.db = connect();
+        this.expenseDao = new ExpenseDao(db, this);
+        this.userDao = new UserDao(db, this);
+        this.categoryDao = new CategoryDao(db, this);
         createSchema();
     }
 
@@ -66,12 +72,14 @@ public class Database {
                     + "balance INTEGER)");
             stmt.execute("CREATE TABLE category ("
                     + "id INTEGER PRIMARY KEY, "
-                    + "name TEXT)");
+                    + "name TEXT UNIQUE, "
+                    + "expense_id INTEGER)");
             stmt.execute("CREATE TABLE expense ("
                     + "id INTEGER PRIMARY KEY, "
                     + "user_id INTEGER, "
                     + "amount INTEGER, "
-                    + "category_id INTEGER)");
+                    + "category_id INTEGER,"
+                    + "description TEXT)");
         }
     }
 

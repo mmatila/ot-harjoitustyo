@@ -13,12 +13,14 @@ public class Expense {
     private Category category;
     private int amount;
     private User user;
+    private String description;
 
     
-    public Expense(Category category, int amount, User user) {
+    public Expense(Category category, int amount, User user, String description) {
         this.category = category;
         this.amount = amount;
         this.user = user;
+        this.description = description;
     }
     
     public Category getCategory() {
@@ -29,6 +31,14 @@ public class Expense {
         return this.amount;
     }
     
+    public User getUser() {
+        return user;
+    }
+    
+    public String getDescription() {
+        return this.description;
+    }
+    
     public void setCategory(Category category) {
         this.category = category;
     }
@@ -36,12 +46,12 @@ public class Expense {
     public void setAmount(int amount) {
         this.amount = amount;
     }
-    
-    public User getUser() {
-        return user;
-    }
 
     public void setUser(User user) {
         this.user = user;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

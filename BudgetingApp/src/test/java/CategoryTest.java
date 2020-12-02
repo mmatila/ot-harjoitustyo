@@ -10,6 +10,7 @@ import budgetingapp.domain.Category;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -33,8 +34,8 @@ public class CategoryTest {
         testDatabase = new Database(databaseName);
         db = testDatabase.connect();
         testDatabase.createSchema();
-        this.categoryDao = new CategoryDao(db);
-        this.testCategory = new Category("test");
+        this.categoryDao = testDatabase.categoryDao;
+        this.testCategory = new Category("test", new ArrayList<>());
     }
     
     @Test
@@ -49,8 +50,26 @@ public class CategoryTest {
         assertEquals(testCategory.getName(), testCategory2.getName());
     }
     
+    @Test
+    public void getCategoryIdWorksProperly() {
+        categoryDao.add(testCategory);
+        assertEquals(1, categoryDao.getCategoryId(testCategory));
+    }
     
-
+    @Test
+    public void getAllCategoriesWorksProperly() {
+        Category testCategory2 = new Category("test2", new ArrayList<>());
+        Category testCategory3 = new Category("test3", new ArrayList<>());
+        Category testCategory4 = new Category("test4", new ArrayList<>());
+        
+        categoryDao.add(testCategory);
+        categoryDao.add(testCategory2);
+        categoryDao.add(testCategory3);
+        categoryDao.add(testCategory4);
+        
+        assertEquals(4, categoryDao.getAllCategories().size());
+    }
+    
     @After
     public void tearDown() {
         testDatabase.delete();

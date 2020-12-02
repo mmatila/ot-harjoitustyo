@@ -15,8 +15,9 @@ public class Category {
     private String name;
     private ArrayList<Expense> expenses;
     
-    public Category(String name) {
+    public Category(String name, ArrayList<Expense> expenses) {
         this.name = name;
+        this.expenses = expenses;
     }
 
     public String getName() {
