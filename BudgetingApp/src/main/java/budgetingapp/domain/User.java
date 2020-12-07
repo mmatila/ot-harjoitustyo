@@ -69,10 +69,6 @@ public class User {
         return this.balance;
     }
     
-    public String getFullName() {
-        return this.firstName + " " + this.lastName;
-    }
-    
     public void setFirstName(String newFirstName) {
         this.firstName = newFirstName;
     }

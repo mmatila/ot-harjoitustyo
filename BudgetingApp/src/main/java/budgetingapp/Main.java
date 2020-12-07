@@ -5,7 +5,15 @@
  */
 package budgetingapp;
 
+import budgetingapp.dao.CategoryDao;
+import budgetingapp.dao.Database;
+import budgetingapp.dao.ExpenseDao;
+import budgetingapp.dao.UserDao;
+import budgetingapp.domain.CategoryService;
+import budgetingapp.domain.ExpenseService;
+import budgetingapp.domain.UserService;
 import budgetingapp.ui.TUI;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
@@ -13,10 +21,17 @@ import java.sql.SQLException;
  * @author mmatila
  */
 public class Main {
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        TUI textUserInterface = new TUI();
+        Database db = new Database("database.db");
+        Connection conn = db.connect();
+        UserDao userDao = new UserDao(conn);
+        CategoryDao categoryDao = new CategoryDao(conn);
+        ExpenseDao expenseDao = new ExpenseDao(conn);
+        UserService userService = new UserService(userDao);
+        CategoryService categoryService = new CategoryService(categoryDao);
+        ExpenseService expenseService = new ExpenseService(expenseDao);
+        TUI textUserInterface = new TUI(db, userService, categoryService, expenseService);
         textUserInterface.run();
-//        App app = new App();
-//        app.Main(args);
     }
 }

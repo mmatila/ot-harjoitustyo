@@ -13,33 +13,29 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * 
+ *
  * @author mmatila
  */
 public class Database {
 
     private Connection db;
     private String databaseName;
-    public ExpenseDao expenseDao;
-    public UserDao userDao;
-    public CategoryDao categoryDao;
 
     /**
      * Constructor for the actual database
+     *
      * @param databaseName name of the database file
-     * @throws SQLException 
+     * @throws SQLException
      */
     public Database(String databaseName) throws SQLException {
         this.databaseName = databaseName;
         this.db = connect();
-        this.expenseDao = new ExpenseDao(db, this);
-        this.userDao = new UserDao(db, this);
-        this.categoryDao = new CategoryDao(db, this);
         createSchema();
     }
 
     /**
      * Connects to the database. Creates one if it doesn't exist.
+     *
      * @return current database connection
      */
     public Connection connect() throws SQLException {
@@ -66,20 +62,20 @@ public class Database {
 
             stmt.execute("CREATE TABLE user ("
                     + "id INTEGER PRIMARY KEY, "
-                    + "name TEXT, "
+                    + "firstname TEXT,"
+                    + "lastname TEXT, "
                     + "username TEXT UNIQUE, "
                     + "password TEXT, "
                     + "balance INTEGER)");
             stmt.execute("CREATE TABLE category ("
                     + "id INTEGER PRIMARY KEY, "
-                    + "name TEXT UNIQUE, "
-                    + "expense_id INTEGER)");
+                    + "name TEXT UNIQUE)");
             stmt.execute("CREATE TABLE expense ("
                     + "id INTEGER PRIMARY KEY, "
                     + "user_id INTEGER, "
                     + "amount INTEGER, "
-                    + "category_id INTEGER,"
-                    + "description TEXT)");
+                    + "description TEXT,"
+                    + "category_id INTEGER)");
         }
     }
 
@@ -91,7 +87,7 @@ public class Database {
      * @throws SQLException
      */
     public boolean tableExists(String name) throws SQLException {
-        Statement  stmt = db.createStatement();
+        Statement stmt = db.createStatement();
         ResultSet res = stmt.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='" + name + "'");
 
         boolean result = false;
@@ -101,7 +97,7 @@ public class Database {
 
         return result;
     }
-    
+
     /**
      * Deletes the whole database. Mostly for deleting test database.
      */
@@ -109,21 +105,4 @@ public class Database {
         File databaseFile = new File(databaseName);
         databaseFile.delete();
     }
-    
-    /**
-     * Returns the database connection.
-     * @return current database connection
-     */
-    public Connection getDb() {
-        return this.db;
-    }
-    
-    /**
-     * Returns the name of the connected database.
-     * @return name of the connected database
-     */
-    public String getDatabaseName() {
-        return this.databaseName;
-    }
-
 }

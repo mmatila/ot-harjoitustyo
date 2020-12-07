@@ -5,13 +5,12 @@
  */
 package budgetingapp.ui;
 
-import budgetingapp.dao.CategoryDao;
 import budgetingapp.dao.Database;
-import budgetingapp.dao.ExpenseDao;
-import budgetingapp.dao.UserDao;
-import budgetingapp.domain.Category;
-import budgetingapp.domain.Expense;
+import budgetingapp.domain.CategoryService;
+import budgetingapp.domain.ExpenseService;
 import budgetingapp.domain.User;
+import budgetingapp.domain.UserService;
+import java.io.Console;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -23,145 +22,153 @@ import java.util.Scanner;
 public class TUI {
 
     private Scanner scanner;
-    public Database db;
-    private UserDao userDao;
-    private CategoryDao categoryDao;
-    private ExpenseDao expenseDao;
-    private User currentUser;
+    private Database db;
+    private UserService userService;
+    private CategoryService categoryService;
+    private ExpenseService expenseService;
+    private User loggedUser;
 
-    public TUI() throws SQLException {
+    public TUI(Database db, UserService userService, CategoryService categoryService, ExpenseService expenseService) throws SQLException {
         this.scanner = new Scanner(System.in);
-        this.db = new Database("database.db");
-        this.userDao = db.userDao;
-        this.categoryDao = db.categoryDao;
-        this.expenseDao = db.expenseDao;
+        this.db = db;
+        this.userService = userService;
+        this.categoryService = categoryService;
+        this.expenseService = expenseService;
+        this.loggedUser = null;
     }
 
-    public void run() {
-
-        System.out.println("Welcome!\n");
-        System.out.println("This text UI is just to help test things\n");
-        printInfo();
+    public void run() throws SQLException {
+        printInfo("");
 
         while (true) {
+            String choice = scanner.nextLine();
 
-            switch (scanner.nextLine()) {
+            switch (choice) {
                 case "exit":
                     handleExit();
                 case "1":
-                    handleCaseOne();
-                    printInfo();
+                    handleLogin();
                     break;
                 case "2":
-                    handleCaseTwo();
-                    printInfo();
+                    createAccount();
                     break;
                 case "3":
-                    handleCaseThree();
-                    printInfo();
+                    deleteAccount();
                     break;
                 case "4":
-                    handleCaseFour();
-                    printInfo();
+                    addCategory();
                     break;
-                default:
-                    printDefault();
+                case "5":
+                    addExpense();
+                    break;
             }
         }
     }
 
-    public void handleCaseOne() {
-        System.out.print("\nEnter your first name: ");
+    public void printInfo(String message) {
+//        validateMessage(message);
+        System.out.println("\nWhat would you like to do?");
+        System.out.println("\t 1. Login / Logout");
+        System.out.println("\t 2. Create new user");
+        if (loggedUser != null) {
+            System.out.println("\t 3. Delete an existing user");
+            System.out.println("\t 4. Create a new expense category");
+            System.out.println("\t 5. Add new expense");
+        }
+        System.out.println("\n\t Type 'exit' to exit the program\n");
+        if (!message.isEmpty()) {
+            System.out.println(message);
+        }
+        System.out.print("\nEnter [1-5]: ");
+    }
+
+    public void handleLogin() throws SQLException {
+        if (loggedUser == null) {
+            System.out.println("\nWelcome back!");
+            System.out.print("\tUsername: ");
+            String username = scanner.nextLine();
+            System.out.print("\tPassword: ");
+            String password = scanner.nextLine();
+            String message = userService.handleLogin(username, password);
+            validateMessage(message, username);
+            printInfo(userService.handleLogin(username, password));
+        } else {
+            handleLogout();
+        }
+    }
+
+    public void handleLogout() {
+        System.out.print("\nAre you sure you want to log out? [Y]es / [N]o: ");
+        String choice = scanner.nextLine();
+        String message = userService.handleLogout(choice);
+        if (message.contains("logged out")) {
+            loggedUser = null;
+        }
+        printInfo(userService.handleLogout(choice));
+    }
+
+    public void createAccount() throws SQLException {
+        Console console = System.console();
+        System.out.println("\nCreate new user");
+        System.out.print("\tFirst name: ");
         String firstName = scanner.nextLine();
-        System.out.print("Enter your last name: ");
-        String lastName = scanner.nextLine();
-        System.out.print("Enter a username: ");
+        System.out.print("\tLast name: ");
+        String lastname = scanner.nextLine();
+        System.out.print("\tUsername: ");
         String username = scanner.nextLine();
-        System.out.print("Enter a password (this isn't hidden for now): ");
+        System.out.print("\tPassword: ");
         String password = scanner.nextLine();
-        System.out.print("Enter your current checkings account balance: ");
-        int balance = scanner.nextInt();
-        User user = new User(firstName, lastName, username, password, balance);
-        this.currentUser = user;
-        System.out.println("\n" + userDao.add(user));
+        System.out.print("\tAccount starting balance: ");
+        int startingBalance = scanner.nextInt();
+        printInfo(userService.addNewUser(firstName, lastname, username, password, startingBalance));
     }
 
-    public void handleCaseTwo() {
-        System.out.print("\nAccount to be deleted (username): ");
+    public void deleteAccount() throws SQLException {
+        System.out.println("\nDelete user");
+        System.out.print("\tUser do you wish to delete (username): ");
         String username = scanner.nextLine();
-        User user = userDao.getUserByUsername(username);
-        if (user != null) {
-            System.out.println("\n" + userDao.delete(user));
-        } else {
-            System.out.println("Username doesn't exist");
-        }
+        printInfo(userService.deleteUser(username));
     }
-    
-    public void handleCaseThree() {
-        System.out.print("\nName of the category: ");
-        String name = scanner.nextLine();
-        Category newCategory = new Category(name, new ArrayList<>());
-        System.out.println("\n" + categoryDao.add(newCategory));
+
+    public void addCategory() throws SQLException {
+        System.out.println("\nAdd new expense category");
+        System.out.print("\tName of the category: ");
+        String categoryName = scanner.nextLine();
+        printInfo(categoryService.addNewCategory(categoryName));
     }
-    
-    public void handleCaseFour() {
-        System.out.print("\nTo which user is the expense added to? Username: ");
-        String username = scanner.nextLine();
-        User user = userDao.getUserByUsername(username);
-        System.out.print("Amount (€): ");
-        int amount = scanner.nextInt();
-        scanner.nextLine();
-        System.out.print("Description (eg. 'Electricity bill'): ");
+
+    public void addExpense() throws SQLException {
+        System.out.println("\nAdd new expense");
+        printCategoryList();
+        System.out.print("\tPlease enter category number: ");
+        int categoryId = Integer.valueOf(scanner.nextLine());
+        System.out.print("\tAmount in euros (eg. 1.85): ");
+        double amount = Double.valueOf(scanner.nextLine());
+        System.out.print("\tDescription: ");
         String description = scanner.nextLine();
-        printCategories();
-        System.out.print("\nSelect category by typing the category id from above: ");
-        int categoryId = scanner.nextInt();
-        scanner.nextLine();
-        Expense expense = createExpense(user, categoryId, amount, description);
-        System.out.println("\n" + expenseDao.add(expense));
-        
-    }
-    
-    public void printCategories() {
-        System.out.println("\n");
-        ArrayList<Category> categories = categoryDao.getAllCategories();
-        
-        if (categories.size() > 0) {
-            for (Category category : categories) {
-                System.out.println(categoryDao.getCategoryId(category) + ". " + category.getName());
-            }
-        } else {
-            System.out.println("List of categories is empty.\n");
-        }
+        int userId = userService.getIdByUser(loggedUser);
+        printInfo(expenseService.addNewExpense(categoryId, amount, description, userId));
     }
 
-    public void printInfo() {
-        System.out.println("\nWhat would you like to do? (1-4)");
-        System.out.println("\t 1. Create new user");
-        System.out.println("\t 2. Delete an existing user");
-        System.out.println("\t 3. Create a new expense category");
-        System.out.println("\t 4. Add new expense\n");
-        System.out.println("\t Type 'exit' to exit the program\n");
-        System.out.print("Enter: ");
-    }
-    
-    public void printDefault() {
-        System.out.println("\n\tCommand not found\n");
-        System.out.print("Enter: ");
-    }
-    
-    public Expense createExpense(User user, int categoryId, int amount, String description) {
-        Expense expense = new Expense(
-                categoryDao.getCategoryById(categoryId),
-                amount,
-                user,
-                description
-        );
-        
-        return expense;
-    }
-    
     public void handleExit() {
+        System.out.print("\nExit successful! Thank you for using BudgetingApp!");
         System.exit(0);
+    }
+    
+    public void printCategoryList() throws SQLException {
+        System.out.println("");
+        ArrayList<String> names = categoryService.getCategories();
+        for (int i = 0; i < names.size(); i++) {
+            System.out.println("\t" + (i+1) + ". " + names.get(i));
+        }
+        System.out.println("");
+    }
+    
+    public void validateMessage(String message, String username) throws SQLException {
+        if (message.contains("logged in")) {
+            loggedUser = userService.getUser(username);
+        } else if (message.contains("logged out")) {
+            loggedUser = null;
+        }
     }
 }

@@ -11,12 +11,12 @@ package budgetingapp.domain;
  */
 public class Expense {
     private Category category;
-    private int amount;
+    private double amount;
     private User user;
     private String description;
 
     
-    public Expense(Category category, int amount, User user, String description) {
+    public Expense(Category category, double amount, User user, String description) {
         this.category = category;
         this.amount = amount;
         this.user = user;
@@ -27,7 +27,7 @@ public class Expense {
         return this.category;
     }
     
-    public int getAmount() {
+    public double getAmount() {
         return this.amount;
     }
     
@@ -43,7 +43,7 @@ public class Expense {
         this.category = category;
     }
     
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

@@ -23,92 +23,56 @@ public class CategoryDao {
     private Statement stmt;
     private PreparedStatement ps;
     private ResultSet rs;
-    private ExpenseDao expenseDao;
-    private Database database;
 
-    public CategoryDao(Connection db, Database database) {
+    public CategoryDao(Connection db) {
         this.db = db;
-        this.database = database;
-        this.expenseDao = database.expenseDao;
     }
 
-    public int getCategoryId(Category category) {
-        int id = 0;
+    public String add(String name) throws SQLException {
+        System.out.println(name);
         try {
-            ps = db.prepareStatement("SELECT * FROM category WHERE name=(?)");
-            ps.setString(1, category.getName());
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                id = rs.getInt("id");
-            }
+            ps = db.prepareStatement("INSERT INTO category (name) VALUES (?)");
+            ps.setString(1, name);
+            ps.execute();
+            return "Success";
         } catch (SQLException e) {
-            System.out.println("Error getting categoryId");
+            if (e.getMessage().contains("UNIQUE")) {
+                return "Exists";
+            }
+            return "Failure";
         }
-        
-        return id;
     }
-
-    public Category getCategoryById(int id) {
+    
+    public Category get(int id) throws SQLException {
         Category category = null;
+        ps = db.prepareStatement("SELECT * FROM category WHERE id=(?)");
         try {
-            ps = db.prepareStatement("SELECT * FROM category WHERE id=(?)");
             ps.setInt(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
                 category = new Category(
                         rs.getString("name"),
-                        expenseDao.getExpensesByCategoryId(id)
+                        new ArrayList<>()
                 );
             }
         } catch (SQLException e) {
-            System.out.println("Error getting category by id");
+            
         }
-
         return category;
     }
-
-    public ArrayList<Category> getAllCategories() {
-        ArrayList<Category> categories = new ArrayList<>();
-
+    
+    public ArrayList<String> getAll() throws SQLException {
+        ArrayList<String> names = new ArrayList<>();
+        ps = db.prepareStatement("SELECT name FROM category");
         try {
-            ps = db.prepareStatement("SELECT * FROM category");
             rs = ps.executeQuery();
             while (rs.next()) {
-                Category category = new Category(
-                        rs.getString("name"),
-                        expenseDao.getExpensesByCategoryId(rs.getInt("id"))
-                );
-                categories.add(category);
+                String name = rs.getString("name");
+                names.add(name);
             }
         } catch (SQLException e) {
-
+            
         }
-        
-        return categories;
-    }
-
-    public String add(Category category) {
-        String message = "";
-        String categoryName = category.getName();
-
-        try {
-            ps = db.prepareStatement("INSERT INTO category (name) VALUES (?)");
-            ps.setString(1, categoryName);
-            ps.execute();
-            message = "New category added: " + categoryName;
-
-        } catch (SQLException e) {
-            if (e.getMessage().contains("UNIQUE")) {
-                message = "Category already exists";
-            } else {
-                message = "Error adding a new category: " + e.getMessage();
-            }
-        }
-
-        return message;
-    }
-    
-    public void updateDaos() {
-        this.expenseDao = database.expenseDao;
+        return names;
     }
 }

@@ -22,43 +22,73 @@ public class UserDao {
     private Statement stmt;
     private PreparedStatement ps;
     private ResultSet rs;
-    private Database database;
 
     /**
      * Constructor
      */
-    public UserDao(Connection db, Database database) {
+    public UserDao(Connection db) {
         this.db = db;
-        this.database = database;
     }
 
-    public User getUserById(int id) {
-        User user = null;
-
+    /**
+     * Add new User object to the database
+     * @param user object to add
+     * @return true if 
+     * @throws SQLException 
+     */
+    public String add(User user) throws SQLException {
+        ps = db.prepareStatement("INSERT INTO user (firstname, lastname, username, password, balance) VALUES (?, ?, ?, ?, ?)");
         try {
-            ps = db.prepareStatement("SELECT * FROM user WHERE id=(?)");
-            ps.setInt(1, id);
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setString(3, user.getUsername());
+            ps.setString(4, user.getPassword());
+            ps.setInt(5, user.getBalance());
+            ps.execute();
+            return "Success";
+        } catch (SQLException e) {
+            if (e.getMessage().contains("UNIQUE")) {
+                return "Exists";
+            }
+            return "Error";
+        }
+    }
+    
+    public String delete(String username) throws SQLException {
+        ps = db.prepareStatement("DELETE FROM user WHERE username=(?)");
+        try {
+            ps.setString(1, username);
+            ps.execute();
+            return "Success";
+        } catch (SQLException e){
+            return "Failure";
+        }
+    }
+    
+    public User get(String username) throws SQLException {
+        User user = null;
+        ps = db.prepareStatement("SELECT * FROM user WHERE username=(?)");
+        try {
+            ps.setString(1, username);
             rs = ps.executeQuery();
             while (rs.next()) {
-                user = new User(rs.getString("name").split(" ")[0],
-                        rs.getString("name").split(" ")[1],
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getInt("balance")
-                );
+                user = new User(
+                rs.getString("firstname"),
+                rs.getString("lastname"),
+                rs.getString("username"),
+                rs.getString("password"),
+                rs.getInt("balance"));
             }
-
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            
         }
-
         return user;
     }
     
-    public int getUserId(User user) {
+    public int getIdByUser(User user) throws SQLException {
         int id = 0;
+        ps = db.prepareStatement("SELECT id FROM user WHERE username=(?)");
         try {
-            ps = db.prepareStatement("SELECT * FROM user WHERE username=(?)");
             ps.setString(1, user.getUsername());
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -67,98 +97,22 @@ public class UserDao {
         } catch (SQLException e) {
             
         }
-        
         return id;
-    }
-
-    /**
-     * Adds new user to the database
-     *
-     * @param user user object
-     * @return Success message or error message
-     */
-    public String add(User user) {
-        String message = "";
-
-        try {
-            ps = db.prepareStatement("INSERT INTO user (name, username, password, balance) VALUES (?, ?, ?, ?);");
-            ps.setString(1, user.getFullName());
-            ps.setString(2, user.getUsername());
-            ps.setString(3, user.getPassword());
-            ps.setInt(4, user.getBalance());
-            ps.execute();
-            message = "User " + user.getUsername() + " created successfully";
-
-        } catch (SQLException e) {
-            if (e.getMessage().contains("UNIQUE")) {
-                message = "Username already exists";
-            } else {
-                message = "Error: " + e.getMessage();
-            }
-        }
-
-        return message;
-    }
-
-    public User getUserByUsername(String username) {
-        User user = null;
-        try {
-            ps = db.prepareStatement("SELECT * FROM user WHERE username=(?)");
-            ps.setString(1, username);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                user = new User(rs.getString("name").split(" ")[0], rs.getString("name").split(" ")[1], rs.getString("username"), rs.getString("password"), rs.getInt("balance"));
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-
-        return user;
-    }
-
-    public int getIdByUsername(String username) {
-        int id = 0;
-        try {
-            ps = db.prepareStatement("SELECT id FROM user WHERE username=(?)");
-            ps.setString(1, username);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                id = rs.getInt("id");
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-
-        return id;
-    }
-
-    /**
-     * Deletes user from the database
-     *
-     * @param user user object
-     * @return
-     */
-    public String delete(User user) {
-        String message = "";
-
-        try {
-            ps = db.prepareStatement("DELETE FROM user WHERE username=(?)");
-            ps.setString(1, user.getUsername());
-            ps.execute();
-            message = "User " + user.getUsername() + " deleted successfully";
-
-        } catch (SQLException e) {
-            message = "Error: " + e.getMessage();
-        }
-
-        return message;
     }
     
-    public void updateDaos() {
-        
+    public String login(String username, String password) throws SQLException {
+        ps = db.prepareStatement("SELECT * FROM user WHERE username=(?) AND password=(?)");
+        try {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                return "Success";
+            }
+        } catch (SQLException e) {
+            return "Failure";
+        }
+        return "Failure";
     }
+
 }
