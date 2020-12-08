@@ -1,6 +1,6 @@
 # Instructions
 
-Download the file [budgetingapp.jar](www.google.com)
+Download the file [budgetingapp.jar](https://github.com/mmatila/ot-harjoitustyo/releases/tag/viikko6)
 
 ## Starting the application
 
