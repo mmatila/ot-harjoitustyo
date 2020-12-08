@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package budgetingapp.domain;
+package budgetingapp.services;
 
 import budgetingapp.dao.ExpenseDao;
 import java.sql.SQLException;

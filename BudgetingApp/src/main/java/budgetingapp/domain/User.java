@@ -17,7 +17,7 @@ public class User {
     private String lastName;
     private String username;
     private String password; // This isn't encrypted for now
-    private int balance;
+    private double balance;
     private ArrayList<Expense> expenses;
     
     /**
@@ -65,7 +65,7 @@ public class User {
     }
     
     
-    public int getBalance() {
+    public double getBalance() {
         return this.balance;
     }
     
@@ -81,7 +81,7 @@ public class User {
         this.balance += amount;
     }
     
-    public void decreseBalance(int amount) {
+    public void decreaseBalance(double amount) {
         this.balance -= amount;
     }
     

@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package budgetingapp.domain;
+package budgetingapp.services;
 
 import budgetingapp.dao.CategoryDao;
+import budgetingapp.domain.Category;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,5 +39,13 @@ public class CategoryService {
     
     public ArrayList<String> getCategories() throws SQLException {
         return categoryDao.getAll();
+    }
+    
+    public boolean categoryExists(int id) throws SQLException {
+        if (getById(id) != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

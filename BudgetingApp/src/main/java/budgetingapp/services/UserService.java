@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package budgetingapp.domain;
+package budgetingapp.services;
 
 import budgetingapp.dao.UserDao;
+import budgetingapp.domain.User;
 import java.sql.SQLException;
 
 /**
@@ -36,6 +37,8 @@ public class UserService {
         String message = userDao.delete(username);
         if (message.equals("Success")) {
             return "User " + username + " deleted.";
+        } else if (message.equals("Doesnt exist")) {
+            return "Could not find user " + username;
         } else {
             return "Could not delete user " + username;
         }
@@ -47,6 +50,17 @@ public class UserService {
     
     public int getIdByUser(User user) throws SQLException {
         return userDao.getIdByUser(user);
+    }
+    
+    public User getUserById(int id) throws SQLException {
+        return userDao.getById(id);
+    }
+    
+    public void updateBalance(int id, double amount) throws SQLException {
+        User user = getUserById(id);
+        user.decreaseBalance(amount);
+        double newAmount = user.getBalance();
+        userDao.updateBalance(id, newAmount);
     }
 
     public String handleLogin(String username, String password) throws SQLException {

@@ -7,7 +7,7 @@
 import budgetingapp.dao.Database;
 import budgetingapp.dao.UserDao;
 import budgetingapp.domain.User;
-import budgetingapp.domain.UserService;
+import budgetingapp.services.UserService;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
