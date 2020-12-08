@@ -26,3 +26,10 @@ mvn jacoco:report
 
 ```
  mvn jxr:jxr checkstyle:checkstyle
+```
+
+### Javadoc
+
+```
+mvn javadoc:javadoc
+```
