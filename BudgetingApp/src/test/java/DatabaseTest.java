@@ -54,6 +54,12 @@ public class DatabaseTest {
         stmt = conn.createStatement();
         assertTrue(testDatabase.tableExists("category"));
     }
+    
+    @After
+    public void delete() {
+        testDatabase.delete();
+    }
+    
 
 
     // TODO add test methods here.

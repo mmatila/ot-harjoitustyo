@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,36 +36,74 @@ public class UserTest {
         this.userDao = new UserDao(db);
         this.userService = new UserService(userDao);
     }
-    
+
     @Test
     public void newUserGetsAddedToDatabase() throws SQLException {
         String successMessage = "User username created successfully!";
         assertEquals(successMessage, userService.addNewUser("firstname", "lastname", "username", "password", 1000));
     }
-    
+
     @Test
     public void noDuplicateUsernames() throws SQLException {
         userService.addNewUser("firstname", "lastname", "username", "password", 1000);
         String message = "Error creating a new user. Username username already exists.";
         assertEquals(message, userService.addNewUser("firstname", "lastname", "username", "password", 1000));
     }
-    
+
     @Test
     public void existingUserGetsDeletedFromDatabse() throws SQLException {
         String message = "User username deleted.";
         userService.addNewUser("firstname", "lastname", "username", "password", 1000);
         assertEquals(message, userService.deleteUser("username"));
     }
-    
+
     @Test
     public void nonExistingUserDeletionReturnsCorrectErrorMessage() throws SQLException {
-        String message = "Could not find user username";
+        String message = "Could not find user usernameeeeee";
         userService.addNewUser("firstname", "lastname", "username", "password", 1000);
         assertEquals(message, userService.deleteUser("usernameeeeee"));
     }
 
+    @Test
+    public void loginWorksWithCorrectCredentials() throws SQLException {
+        String message = "User username logged in";
+        userService.addNewUser("firstname", "lastname", "username", "password", 1000);
+        assertEquals(message, userService.handleLogin("username", "password"));
+    }
+
+    @Test
+    public void loginFailsWithIncorrectCredentials() throws SQLException {
+        String message = "Incorrect username or password";
+        userService.addNewUser("firstname", "lastname", "username", "password", 1000);
+        assertEquals(message, userService.handleLogin("username", "passsssword"));
+    }
+    
+    @Test
+    public void logoutWorksCorrectly() throws SQLException {
+        String message = "User logged out";
+        userService.addNewUser("firstname", "lastname", "username", "password", 1000);
+        assertEquals(message, userService.handleLogout("Y"));
+    }
+    
+    @Test
+    public void getUserReturnsCorrectUser() throws SQLException {
+        User user = new User("firstname", "lastname", "username", "password", 1000);
+        userService.addNewUser("firstname", "lastname", "username", "password", 1000);
+        assertEquals(user.getFirstName(), userService.getUser("username").getFirstName());
+        assertEquals(user.getLastName(), userService.getUser("username").getLastName());
+        assertEquals(user.getUsername(), userService.getUser("username").getUsername());
+        assertEquals(user.getPassword(), userService.getUser("username").getPassword());
+    }
+    
+    @Test
+    public void updateBalanceUpdatesBalance() throws SQLException {
+        userService.addNewUser("firstname", "lastname", "username", "password", 1000);
+        userService.updateBalance(1, 100);
+        assertTrue(900 == userService.getUser("username").getBalance());
+    }
+
     @After
-    public void tearDown() {
+    public void tearDown() throws SQLException {
         testDatabase.delete();
     }
 }

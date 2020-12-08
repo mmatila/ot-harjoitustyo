@@ -23,10 +23,23 @@ public class ExpenseDao {
     private PreparedStatement ps;
     private ResultSet rs;
 
+    /**
+     * Constructor
+     * @param db Database connection
+     */
     public ExpenseDao(Connection db) {
         this.db = db;
     }
     
+    /**
+     * Adds a new expense to the database
+     * @param userId id of user whose expense it is
+     * @param amount the expense cost in euros
+     * @param description additional information about the expense. For example "Rent"
+     * @param categoryId id of the category that the expense belongs to
+     * @return "Success" if expense was added successfully. Otherwise "Failure"
+     * @throws SQLException Exception
+     */
     public String add(int userId, double amount, String description, int categoryId) throws SQLException {
         ps = db.prepareStatement("INSERT INTO expense (user_id, amount, description, category_id) VALUES (?, ?, ?, ?)");
         try {

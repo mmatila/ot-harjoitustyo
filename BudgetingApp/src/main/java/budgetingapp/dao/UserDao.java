@@ -23,9 +23,10 @@ public class UserDao {
     private PreparedStatement ps;
     private ResultSet rs;
 
-    /**
-     * Constructor
-     */
+     /**
+      * Constructor
+      * @param db Database connection
+      */
     public UserDao(Connection db) {
         this.db = db;
     }
@@ -33,9 +34,9 @@ public class UserDao {
     /**
      * Add new User object to the database
      *
-     * @param user object to add
-     * @return true if
-     * @throws SQLException
+     * @param user User object to be added to the database
+     * @return "Success" if user was added successfully. "Exists" if user already exists in the database. Otherwise "Failure"
+     * @throws SQLException Exception
      */
     public String add(User user) throws SQLException {
         ps = db.prepareStatement("INSERT INTO user (firstname, lastname, username, password, balance) VALUES (?, ?, ?, ?, ?)");
@@ -55,6 +56,12 @@ public class UserDao {
         }
     }
 
+    /**
+     * Deletes a user from the database
+     * @param username username of the user to be deleted
+     * @return "Success" if user was deleted successfully". "Doesnt exist" user was not found from database. Otherwise "Failure"
+     * @throws SQLException Exception
+     */
     public String delete(String username) throws SQLException {
         if (get(username) != null) {
             ps = db.prepareStatement("DELETE FROM user WHERE username=(?)");
@@ -70,6 +77,12 @@ public class UserDao {
         }
     }
 
+    /**
+     * Returns user from database that's username corresponds to the username given as parameter
+     * @param username username of user to return
+     * @return User object
+     * @throws SQLException Exception 
+     */
     public User get(String username) throws SQLException {
         User user = null;
         ps = db.prepareStatement("SELECT * FROM user WHERE username=(?)");

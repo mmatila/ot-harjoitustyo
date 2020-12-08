@@ -24,6 +24,10 @@ public class CategoryDao {
     private PreparedStatement ps;
     private ResultSet rs;
 
+    /**
+     * Constructor
+     * @param db Database connection
+     */
     public CategoryDao(Connection db) {
         this.db = db;
     }
@@ -43,6 +47,12 @@ public class CategoryDao {
         }
     }
     
+    /**
+     * Returns category from database corresponding to id given as parameter
+     * @param id category id
+     * @return Category with given id
+     * @throws SQLException Exception
+     */
     public Category get(int id) throws SQLException {
         Category category = null;
         ps = db.prepareStatement("SELECT * FROM category WHERE id=(?)");
@@ -61,6 +71,11 @@ public class CategoryDao {
         return category;
     }
     
+    /**
+     * Returns all categories from database
+     * @return List of categories
+     * @throws SQLException Exception
+     */
     public ArrayList<String> getAll() throws SQLException {
         ArrayList<String> names = new ArrayList<>();
         ps = db.prepareStatement("SELECT name FROM category");
