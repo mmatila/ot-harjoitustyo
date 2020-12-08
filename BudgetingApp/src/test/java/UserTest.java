@@ -35,13 +35,33 @@ public class UserTest {
         testDatabase.createSchema();
         this.userDao = new UserDao(db);
         this.userService = new UserService(userDao);
-        User testUser = new User("firstname", "lastname", "username", "password", 1000);
     }
     
     @Test
     public void newUserGetsAddedToDatabase() throws SQLException {
         String successMessage = "User username created successfully!";
         assertEquals(successMessage, userService.addNewUser("firstname", "lastname", "username", "password", 1000));
+    }
+    
+    @Test
+    public void noDuplicateUsernames() throws SQLException {
+        userService.addNewUser("firstname", "lastname", "username", "password", 1000);
+        String message = "Error creating a new user. Username username already exists.";
+        assertEquals(message, userService.addNewUser("firstname", "lastname", "username", "password", 1000));
+    }
+    
+    @Test
+    public void existingUserGetsDeletedFromDatabse() throws SQLException {
+        String message = "User username deleted.";
+        userService.addNewUser("firstname", "lastname", "username", "password", 1000);
+        assertEquals(message, userService.deleteUser("username"));
+    }
+    
+    @Test
+    public void nonExistingUserDeletionReturnsCorrectErrorMessage() throws SQLException {
+        String message = "Could not find user username";
+        userService.addNewUser("firstname", "lastname", "username", "password", 1000);
+        assertEquals(message, userService.deleteUser("usernameeeeee"));
     }
 
     @After

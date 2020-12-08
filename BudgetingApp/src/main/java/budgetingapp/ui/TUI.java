@@ -181,7 +181,7 @@ public class TUI {
             message = "\n\tSeems empty in here. Add some new categories first!\n";
         }
         for (int i = 0; i < names.size(); i++) {
-            System.out.println("\t" + (i+1) + ". " + names.get(i));
+            System.out.println("\t" + (i + 1) + ". " + names.get(i));
         }
         System.out.println(message);
     }
