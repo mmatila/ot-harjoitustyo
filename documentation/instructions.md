@@ -14,7 +14,6 @@ java -jar budgetingapp.jar
 
 User is first greeted with following view:
 
-<img src="https://github.com/mmatila/ot-harjoitustyo/tree/master/documentation/images/initialView.png">
 
 Type **1** and press _enter_ to log into an existing account. Application asks for credentials. Type in your username and password.  
 Type **2** and press _enter_ to create a new account. Application asks for personal information. After typing in all information, account gets created.
@@ -23,6 +22,5 @@ Type **2** and press _enter_ to create a new account. Application asks for perso
 
 After logging in to an account, the view is a little different:
 
-<img src="https://github.com/mmatila/ot-harjoitustyo/tree/master/documentation/images/loggedInView.png">
 
 These commands follow the same pattern as logging in or creating a new account. Detailed instructions will be added later
