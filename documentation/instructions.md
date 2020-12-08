@@ -1,17 +1,28 @@
-# How to use
+# Instructions
 
+Download the file [budgetingapp.jar](www.google.com)
 
+## Starting the application
 
-## How to start application
-
-To run the application, type the following in the root directory
+Application can be launched using the command
 
 ```
-mvn compile exec:java -Dexec.mainClass=Main
+java -jar budgetingapp.jar
 ```
 
-Or use the jar file in the [release](https://github.com/mmatila/ot-harjoitustyo/releases/tag/viikko5)
+## Logging in/out & creating new user
 
-## How to use the app
+User is first greeted with following view:
 
-The application has quite a simple text-based UI that shouldn't be too hard to use.
+<img src="https://github.com/mmatila/ot-harjoitustyo/tree/master/documentation/images/initialView.png">
+
+Type **1** and press _enter_ to log into an existing account. Application asks for credentials. Type in your username and password.  
+Type **2** and press _enter_ to create a new account. Application asks for personal information. After typing in all information, account gets created.
+
+## Using the main features
+
+After logging in to an account, the view is a little different:
+
+<img src="https://github.com/mmatila/ot-harjoitustyo/tree/master/documentation/images/loggedInView.png">
+
+These commands follow the same pattern as logging in or creating a new account. Detailed instructions will be added later
