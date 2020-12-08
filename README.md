@@ -1,4 +1,4 @@
-Budgeting application  
+# Budgeting application  
 
 A very simple application to help tracking your expenses.
 
