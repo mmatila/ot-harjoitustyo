@@ -8,6 +8,7 @@ import budgetingapp.dao.Database;
 import budgetingapp.dao.UserDao;
 import budgetingapp.domain.User;
 import budgetingapp.services.UserService;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -77,14 +78,14 @@ public class UserTest {
         userService.addNewUser("firstname", "lastname", "username", "password", 1000);
         assertEquals(message, userService.handleLogin("username", "passsssword"));
     }
-    
+
     @Test
     public void logoutWorksCorrectly() throws SQLException {
         String message = "User logged out";
         userService.addNewUser("firstname", "lastname", "username", "password", 1000);
         assertEquals(message, userService.handleLogout("Y"));
     }
-    
+
     @Test
     public void getUserReturnsCorrectUser() throws SQLException {
         User user = new User("firstname", "lastname", "username", "password", 1000);
@@ -94,16 +95,28 @@ public class UserTest {
         assertEquals(user.getUsername(), userService.getUser("username").getUsername());
         assertEquals(user.getPassword(), userService.getUser("username").getPassword());
     }
-    
+
     @Test
-    public void updateBalanceUpdatesBalance() throws SQLException {
+    public void updateBalanceDecreasesBalance() throws SQLException {
         userService.addNewUser("firstname", "lastname", "username", "password", 1000);
-        userService.updateBalance(1, 100);
+        userService.updateBalance(1, 100, "decrease");
         assertTrue(900 == userService.getUser("username").getBalance());
     }
 
+    @Test
+    public void updateBalanceIncreasesBalance() throws SQLException {
+        userService.addNewUser("firstname", "lastname", "username", "password", 1000);
+        userService.updateBalance(1, 100, "increase");
+        assertTrue(1100 == userService.getUser("username").getBalance());
+    }
+
     @After
-    public void tearDown() throws SQLException {
-        testDatabase.delete();
+    public void tearDown() {
+        try {
+            db.close();
+            testDatabase.delete();
+        } catch (IOException | SQLException e) {
+            System.out.println("Error deleting the file: " + e.getMessage());
+        }
     }
 }

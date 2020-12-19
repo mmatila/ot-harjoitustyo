@@ -77,7 +77,7 @@ public class User {
         this.lastName = newLastName;
     }
     
-    public void increaseBalance(int amount) {
+    public void increaseBalance(double amount) {
         this.balance += amount;
     }
     

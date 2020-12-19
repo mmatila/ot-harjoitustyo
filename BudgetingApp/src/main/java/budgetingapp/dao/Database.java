@@ -6,6 +6,9 @@
 package budgetingapp.dao;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -29,8 +32,6 @@ public class Database {
      */
     public Database(String databaseName) throws SQLException {
         this.databaseName = databaseName;
-        this.db = connect();
-        createSchema();
     }
 
     /**
@@ -38,14 +39,15 @@ public class Database {
      *
      * @return current database connection
      */
-    public Connection connect() throws SQLException {
+    public Connection connect() {
         // try connect to database
         try {
-            Connection db = DriverManager.getConnection("jdbc:sqlite:" + this.databaseName);
+            db = DriverManager.getConnection("jdbc:sqlite:" + this.databaseName);
             Class.forName("org.sqlite.JDBC");
+            createSchema();
             return db;
 
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Error: " + e.getMessage());
             return null;
         }
@@ -100,9 +102,12 @@ public class Database {
 
     /**
      * Deletes the whole database. Mostly for deleting test database.
+     * 
+     * @throws IOException
      */
-    public void delete() {
+    public void delete() throws IOException {
         File databaseFile = new File(databaseName);
-        databaseFile.delete();
+        Path path = databaseFile.toPath();
+        Files.delete(path);
     }
 }

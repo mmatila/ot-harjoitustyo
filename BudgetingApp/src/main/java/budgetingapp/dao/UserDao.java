@@ -59,7 +59,7 @@ public class UserDao {
     /**
      * Deletes a user from the database
      * @param username username of the user to be deleted
-     * @return "Success" if user was deleted successfully". "Doesnt exist" user was not found from database. Otherwise "Failure"
+     * @return "Success" if user was deleted successfully". "Doesn't exist" if user was not found from database. Otherwise "Failure"
      * @throws SQLException Exception
      */
     public String delete(String username) throws SQLException {

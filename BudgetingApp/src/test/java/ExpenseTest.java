@@ -2,6 +2,7 @@
 import budgetingapp.dao.Database;
 import budgetingapp.dao.ExpenseDao;
 import budgetingapp.services.ExpenseService;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -35,15 +36,20 @@ public class ExpenseTest {
         this.expenseDao = new ExpenseDao(db);
         this.expenseService = new ExpenseService(expenseDao);
     }
-    
+
     @Test
     public void newExpenseGetsAddedToDatabase() throws SQLException {
         String message = "New expense added";
         assertEquals(message, expenseService.addNewExpense(1, 1.00, "test", 1));
     }
-    
+
     @After
     public void tearDown() {
-        testDatabase.delete();
+        try {
+            db.close();
+            testDatabase.delete();
+        } catch (IOException | SQLException e) {
+            System.out.println("Error deleting the file:" + e.getMessage());
+        }
     }
 }

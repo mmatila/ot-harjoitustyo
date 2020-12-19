@@ -14,13 +14,13 @@ import java.sql.SQLException;
  * @author mmatila
  */
 public class UserService {
-
+    
     private UserDao userDao;
-
+    
     public UserService(UserDao userDao) {
         this.userDao = userDao;
     }
-
+    
     public String addNewUser(String firstname, String lastname, String username, String password, int balance) throws SQLException {
         User user = new User(firstname, lastname, username, password, balance);
         String message = userDao.add(user);
@@ -32,7 +32,7 @@ public class UserService {
             return "Something went wrong adding a new user.";
         }
     }
-
+    
     public String deleteUser(String username) throws SQLException {
         String message = userDao.delete(username);
         if (message.equals("Success")) {
@@ -43,7 +43,10 @@ public class UserService {
             return "Could not delete user " + username;
         }
     }
-    
+
+//    public String increaseBalance() {
+//        
+//    }
     public User getUser(String username) throws SQLException {
         return userDao.get(username);
     }
@@ -56,13 +59,17 @@ public class UserService {
         return userDao.getById(id);
     }
     
-    public void updateBalance(int id, double amount) throws SQLException {
+    public void updateBalance(int id, double amount, String type) throws SQLException {
         User user = getUserById(id);
-        user.decreaseBalance(amount);
+        if (type.equals("decrease")) {            
+            user.decreaseBalance(amount);
+        } else if (type.equals("increase")) {
+            user.increaseBalance(amount);
+        }
         double newAmount = user.getBalance();
         userDao.updateBalance(id, newAmount);
     }
-
+    
     public String handleLogin(String username, String password) throws SQLException {
         String message = userDao.login(username, password);
         if (message.equals("Success")) {
@@ -71,7 +78,7 @@ public class UserService {
             return "Incorrect username or password";
         }
     }
-
+    
     public String handleLogout(String choice) {
         if (choice.equals("Y") || choice.equals("y")) {
             return "User logged out";

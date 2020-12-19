@@ -45,8 +45,7 @@
                 <configuration>
                     <excludes>
                         <exclude>budgetingapp/ui/*</exclude>
-                        <exclude>budgetingapp/Main.java</exclude>
-                        <exclude>budgetingapp/App.java</exclude>
+                        <exclude>budgetingapp/main</exclude>
                     </excludes>
                 </configuration>
                 <executions>

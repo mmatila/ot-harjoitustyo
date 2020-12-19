@@ -7,6 +7,7 @@ package budgetingapp.services;
 
 import budgetingapp.dao.ExpenseDao;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 /**
  *
@@ -26,6 +27,10 @@ public class ExpenseService {
         } else {
             return "Could not add expense";
         }
+    }
+    
+    public HashMap<Double, String> getExpenses(int categoryId, int userId) throws SQLException {     
+        return expenseDao.getAllByCategoryAndUserId(categoryId, userId);
     }
     
 }

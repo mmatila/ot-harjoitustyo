@@ -12,6 +12,8 @@ import budgetingapp.domain.User;
 import budgetingapp.services.UserService;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -60,9 +62,12 @@ public class TUI {
                 case "5":
                     addExpense();
                     break;
-//                case "6":
-//                    moreOptions();
-//                    break;
+                case "6":
+                    addIncome();
+                    break;
+                case "7":
+                    moreOptions();
+                    break;
                 default:
                     printInfo("Invalid command");
             }
@@ -154,16 +159,43 @@ public class TUI {
                 String description = scanner.nextLine();
                 int userId = userService.getIdByUser(loggedUser);
                 printInfo(expenseService.addNewExpense(categoryId, amount, description, userId));
-                userService.updateBalance(userId, amount);
+                userService.updateBalance(userId, amount, "decrease");
             } else {
                 printInfo("Category does not exist. Returning to main menu...");
+                
             }
         }
     }
     
-    public void moreOptions() {
+    public void addIncome() throws SQLException {
+        if (isLoggedIn()) {
+            System.out.println("\n--- Add new income ---");
+            System.out.print("\tAmount in euros (eg. 200): ");
+            double amount = Double.valueOf(scanner.nextLine());
+            int userId = userService.getIdByUser(loggedUser);
+            printInfo("New income added successfully!");
+            userService.updateBalance(userId, amount, "increase");
+        }
+    }
+    
+    public void moreOptions() throws SQLException {
         if (isLoggedIn()) {
             printMoreOptions();
+            
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "exit":
+                    handleExit();
+                case "1":
+                    printExpenses();
+                    break;
+                case "2":
+                    handleLogout();
+                    break;
+                default:
+                    printInfo("Invalid command");
+            }
         }
     }
 
@@ -177,13 +209,44 @@ public class TUI {
         System.out.println(msg);
         String message = "";
         ArrayList<String> names = categoryService.getCategories();
-        if (names.size() == 0) {
+        if (names.isEmpty()) {
             message = "\n\tSeems empty in here. Add some new categories first!\n";
         }
         for (int i = 0; i < names.size(); i++) {
             System.out.println("\t" + (i + 1) + ". " + names.get(i));
         }
         System.out.println(message);
+    }
+    
+    public void printExpenses() throws SQLException {
+        System.out.println("\n--- List your expenses ---");
+        printCategoryList("Select category:");
+        System.out.print("\tEnter category number: ");
+        int userId = userService.getIdByUser(loggedUser);
+        int categoryId = Integer.valueOf(scanner.nextLine());
+        if (categoryService.categoryExists(categoryId)) {
+            listExpenses(categoryId, userId);
+        } else {
+            printInfo("Category does not exist. Returning to main menu...");
+        }
+    }
+    
+    public void listExpenses(int categoryId, int userId) throws SQLException {
+        System.out.println("");
+        String message = "";
+        double total = 0;
+        HashMap<Double, String> expenses = expenseService.getExpenses(categoryId, userId);
+        if (expenses.isEmpty()) {
+            message = "\n\tNo expenses in this category";
+        } else {
+            for (Map.Entry<Double, String> entry : expenses.entrySet()) {
+               total += entry.getKey();
+                System.out.println("\t" + entry.getKey() + "€ - " + entry.getValue());
+            }
+            message = "\nTotal spent on this category: " + String.valueOf(total) + "€";
+        }
+        System.out.println(message);
+        System.out.print("\nPress [enter] to return to menu");
     }
     
     public void validateMessage(String message, String username) throws SQLException {
@@ -213,15 +276,14 @@ public class TUI {
         System.out.println("\t 3. Delete an existing user");
         System.out.println("\t 4. Create a new expense category");
         System.out.println("\t 5. Add new expense");
-//        System.out.println("\t 6. More options -->");
+        System.out.println("\t 6. Add new income");
+        System.out.println("\t 7. More options -->");
     }
     
     public void printMoreOptions() {
         System.out.println("\nMore options...");
-        System.out.println("\t 1. ");
-        System.out.println("\t 2. Create new user");
+        System.out.println("\t 1. List your expenses");
+        System.out.println("\t 2. Log out");
+        System.out.print("\nEnter command: ");
     }
-    
-    
-    
 }

@@ -5,6 +5,7 @@
  */
 
 import budgetingapp.dao.Database;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,7 +27,6 @@ public class DatabaseTest {
 
     @Before
     public void initialize() throws SQLException {
-        
         testDatabase = new Database(databaseName);
         conn = testDatabase.connect();
         testDatabase.createSchema();
@@ -54,17 +54,14 @@ public class DatabaseTest {
         stmt = conn.createStatement();
         assertTrue(testDatabase.tableExists("category"));
     }
-    
+
     @After
     public void delete() {
-        testDatabase.delete();
+        try {
+            conn.close();
+            testDatabase.delete();
+        } catch (IOException | SQLException e) {
+            System.out.println("Error deleting the file: " + e.getMessage());
+        }
     }
-    
-
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
 }

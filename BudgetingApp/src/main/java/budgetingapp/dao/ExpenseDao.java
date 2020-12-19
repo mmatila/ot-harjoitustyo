@@ -5,12 +5,13 @@
  */
 package budgetingapp.dao;
 
-import budgetingapp.domain.Expense;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -53,4 +54,21 @@ public class ExpenseDao {
             return "Failure";
         }
     }
+    
+    public HashMap<Double, String> getAllByCategoryAndUserId(int categoryId, int userId) throws SQLException {
+        HashMap expenses = new HashMap<Double, String>();
+        ps = db.prepareStatement("SELECT amount, description FROM expense WHERE category_id=(?) AND user_id=(?)");
+        try {
+            ps.setInt(1, categoryId);
+            ps.setInt(2, userId);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                expenses.put(Double.valueOf(rs.getInt("amount")), rs.getString("description"));
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+        return expenses;
+    }
+    
 }

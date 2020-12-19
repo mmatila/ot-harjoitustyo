@@ -6,12 +6,11 @@
 
 import budgetingapp.dao.CategoryDao;
 import budgetingapp.dao.Database;
-import budgetingapp.domain.Category;
 import budgetingapp.services.CategoryService;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -37,22 +36,27 @@ public class CategoryTest {
         this.categoryDao = new CategoryDao(db);
         this.categoryService = new CategoryService(categoryDao);
     }
-    
+
     @Test
     public void categoryGetsAddedToDatabase() throws SQLException {
         String message = "Category test added successfully";
         assertEquals(message, categoryService.addNewCategory("test"));
     }
-    
+
     @Test
     public void noDuplicateCategories() throws SQLException {
         String message = "Could not add category test. Category already exists.";
         categoryService.addNewCategory("test");
         assertEquals(message, categoryService.addNewCategory("test"));
     }
-    
+
     @After
     public void tearDown() {
-        testDatabase.delete();
+        try {
+            db.close();
+            testDatabase.delete();
+        } catch (IOException | SQLException e) {
+            System.out.println("Error deleting the file: " + e.getMessage());
+        }
     }
 }

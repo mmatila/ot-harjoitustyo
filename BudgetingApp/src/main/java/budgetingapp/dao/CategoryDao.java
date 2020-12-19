@@ -33,7 +33,6 @@ public class CategoryDao {
     }
 
     public String add(String name) throws SQLException {
-        System.out.println(name);
         try {
             ps = db.prepareStatement("INSERT INTO category (name) VALUES (?)");
             ps.setString(1, name);
