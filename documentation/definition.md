@@ -2,50 +2,48 @@
 
 ## What it is
 
-Basic application for one to keep track of their savings and expenses
+A very basic application for one to keep track of their savings and expenses
 
 ## Users
 
 In the beginning there's only going to be one user role: *standard user.*
 
-## Functionality
+## Functionalities
 
 ### Authentication  
 
 **User must be signed in to use the app's features**  
-- Signing up (register form)
-  - unique username :heavy_check_mark:
-  - password :heavy_check_mark:
-  - (optional) profile picture?
-- Signing in
-  - separate login screen :heavy_check_mark:
-  - error if username doesn't exist or password is incorrect :heavy_check_mark:
-
+#### Before signing in
+  - User can login to an existing account
+  - User can create a new account
+    - Username must be unique
+    - error if username doesn't exist or password is incorrect  
+    
+#### After signing in
+  - User gets access to all core functionalities
+    - Deleting existing account
+    - Adding categories
+    - Adding expenses & income
+    - Listing expenses
+  
 ### Expense tracking  
 
-- Adding new expenses and categorizing them :heavy_check_mark:
-  - eg. entertainment, food, transportation... :heavy_check_mark:
-  - additional information: "Spotify subscription" or "groceries" :heavy_check_mark:
-  
-### Savings tracking  
+- Adding new expenses and categorizing them
+  - eg. entertainment, food, transportation... 
+  - additional information: "Spotify subscription" or "groceries"
+  - Listing all expenses and the total amount spent on particular category  
 
-- Adding new savings and categorizing them
-  - normal savings or an investment?
-  - automatic savings rate calculation (%)
+### Other
 
-### Other  
-
-- Overall balance
-  - Adding new income increases the overall balance
-  - Expenses and savings decrease the balance :heavy_check_mark:
-  - Displayed
-    - Possibility to disable
+- Ability to delete authenticated user
     
 ## Further development
-- Family accounts
-  - Shared budget for multiple users
-    - New additional user type with more restricted usage
-- Automated expenses
-  - Rent, streaming services...
-    - Certain day each month
-- Automated savings
+
+The application ended up being a lot simpler that supposed. 
+
+- Deleting expenses
+  - An extra 0 is accidentally included in the expense and needs to be deleted
+- Savings tracking
+  - Use the income/expense ratio to calculate savings rate (%)
+- GUI!!!
+  - Would make the application a lot better even with a simple GUI
