@@ -4,11 +4,12 @@ A very simple application to help tracking your expenses.
 
 ## Project documentation
 [Definition](https://github.com/mmatila/ot-harjoitustyo/blob/master/documentation/definition.md)  
-[Initial architecture](https://github.com/mmatila/ot-harjoitustyo/blob/master/documentation/architecture.md)  
+[Architecture](https://github.com/mmatila/ot-harjoitustyo/blob/master/documentation/architecture.md)  
+[Testing document](https://github.com/mmatila/ot-harjoitustyo/blob/master/documentation/testing_document.md)  
 [Instructions](https://github.com/mmatila/ot-harjoitustyo/blob/master/documentation/instructions.md)  
 [Hours](https://github.com/mmatila/ot-harjoitustyo/blob/master/documentation/hours.md)  
 ### Releases 
-[Release #1 for week 5](https://github.com/mmatila/ot-harjoitustyo/releases/tag/viikko5)  
+[Final Release](https://github.com/mmatila/ot-harjoitustyo/releases/tag/v1.0)
 
 ## Command Line
 
