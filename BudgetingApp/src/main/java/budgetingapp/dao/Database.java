@@ -42,11 +42,10 @@ public class Database {
         // try connect to database
         try {
             db = DriverManager.getConnection("jdbc:sqlite:" + this.databaseName);
-            Class.forName("org.sqlite.JDBC");
             createSchema();
             return db;
 
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
             return null;
         }
