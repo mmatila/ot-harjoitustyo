@@ -56,12 +56,12 @@ public class DatabaseTest {
     }
 
     @After
-    public void delete() {
+    public void tearDown() {
         try {
             conn.close();
             testDatabase.delete();
-        } catch (IOException | SQLException e) {
-            System.out.println("Error deleting the file: " + e.getMessage());
+        } catch (SQLException e) {
+
         }
     }
 }

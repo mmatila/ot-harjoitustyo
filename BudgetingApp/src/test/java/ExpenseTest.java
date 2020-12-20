@@ -59,8 +59,8 @@ public class ExpenseTest {
         try {
             db.close();
             testDatabase.delete();
-        } catch (IOException | SQLException e) {
-            System.out.println("Error deleting the file:" + e.getMessage());
+        } catch (SQLException e) {
+            
         }
     }
 }
