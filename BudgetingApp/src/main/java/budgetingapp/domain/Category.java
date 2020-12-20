@@ -19,22 +19,4 @@ public class Category {
         this.name = name;
         this.expenses = expenses;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ArrayList<Expense> getExpenses() {
-        return expenses;
-    }
-
-    public void setExpenses(ArrayList<Expense> expenses) {
-        this.expenses = expenses;
-    }
-    
-    
 }

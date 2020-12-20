@@ -80,10 +80,24 @@ public class UserTest {
     }
 
     @Test
-    public void logoutWorksCorrectly() throws SQLException {
+    public void logoutWorksCorrectlyWithCapitalY() throws SQLException {
         String message = "User logged out";
         userService.addNewUser("firstname", "lastname", "username", "password", 1000);
         assertEquals(message, userService.handleLogout("Y"));
+    }
+
+    @Test
+    public void logoutWorksCorrectlyWithLowerCaseY() throws SQLException {
+        String message = "User logged out";
+        userService.addNewUser("firstname", "lastname", "username", "password", 1000);
+        assertEquals(message, userService.handleLogout("y"));
+    }
+
+    @Test
+    public void logoutReturnsCorrectMessageIfCancelled() throws SQLException {
+        String message = "Logout cancelled";
+        userService.addNewUser("firstname", "lastname", "username", "password", 1000);
+        assertEquals(message, userService.handleLogout("z"));
     }
 
     @Test
@@ -94,6 +108,14 @@ public class UserTest {
         assertEquals(user.getLastName(), userService.getUser("username").getLastName());
         assertEquals(user.getUsername(), userService.getUser("username").getUsername());
         assertEquals(user.getPassword(), userService.getUser("username").getPassword());
+    }
+
+    @Test
+    public void existingUserReturnsCorrectId() throws SQLException {
+        User user = new User("firstname", "lastname", "username", "password", 1000);
+        userService.addNewUser("test", "test", "test", "test", 1000);
+        userDao.add(user);
+        assertEquals(userService.getIdByUser(user), 2);
     }
 
     @Test

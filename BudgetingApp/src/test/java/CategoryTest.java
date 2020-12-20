@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,10 +46,42 @@ public class CategoryTest {
     }
 
     @Test
+    public void blankCategoryNameReturnsFailure() throws SQLException {
+        String message = "Could not add category ";
+        assertEquals(message, categoryService.addNewCategory(""));
+    }
+
+    @Test
     public void noDuplicateCategories() throws SQLException {
         String message = "Could not add category test. Category already exists.";
         categoryService.addNewCategory("test");
         assertEquals(message, categoryService.addNewCategory("test"));
+    }
+
+    @Test
+    public void existingCategoriesAreFound() throws SQLException {
+        categoryService.addNewCategory("Entertainment");
+        categoryService.addNewCategory("Bills");
+        categoryService.addNewCategory("Transportation");
+        assertTrue(categoryService.categoryExists(1));
+        assertTrue(categoryService.categoryExists(2));
+        assertTrue(categoryService.categoryExists(3));
+    }
+
+    @Test
+    public void nonExistentCategoriesReturnFalse() throws SQLException {
+        categoryService.addNewCategory("Entertainment");
+        categoryService.addNewCategory("Bills");
+        categoryService.addNewCategory("Transportation");
+        assertFalse(categoryService.categoryExists(4));
+    }
+    
+    @Test
+    public void getAllReturnsAllCategories() throws SQLException {
+        categoryService.addNewCategory("Entertainment");
+        categoryService.addNewCategory("Bills");
+        categoryService.addNewCategory("Transportation");
+        assertEquals(categoryService.getCategories().size(), 3);
     }
 
     @After

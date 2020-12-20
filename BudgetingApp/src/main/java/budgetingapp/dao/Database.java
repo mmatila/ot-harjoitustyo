@@ -28,9 +28,8 @@ public class Database {
      * Constructor for the actual database
      *
      * @param databaseName name of the database file
-     * @throws SQLException
      */
-    public Database(String databaseName) throws SQLException {
+    public Database(String databaseName) {
         this.databaseName = databaseName;
     }
 
@@ -56,28 +55,30 @@ public class Database {
     /**
      * Creates the schema for the database.
      *
-     * @throws SQLException
      */
-    public void createSchema() throws SQLException {
+    public void createSchema() {
         if (!tableExists("user")) {
-            Statement stmt = db.createStatement();
+            try {
+                Statement stmt = db.createStatement();
+                stmt.execute("CREATE TABLE user ("
+                        + "id INTEGER PRIMARY KEY, "
+                        + "firstname TEXT,"
+                        + "lastname TEXT, "
+                        + "username TEXT UNIQUE, "
+                        + "password TEXT, "
+                        + "balance INTEGER)");
+                stmt.execute("CREATE TABLE category ("
+                        + "id INTEGER PRIMARY KEY, "
+                        + "name TEXT UNIQUE)");
+                stmt.execute("CREATE TABLE expense ("
+                        + "id INTEGER PRIMARY KEY, "
+                        + "user_id INTEGER, "
+                        + "amount INTEGER, "
+                        + "description TEXT,"
+                        + "category_id INTEGER)");
+            } catch (SQLException e) {
 
-            stmt.execute("CREATE TABLE user ("
-                    + "id INTEGER PRIMARY KEY, "
-                    + "firstname TEXT,"
-                    + "lastname TEXT, "
-                    + "username TEXT UNIQUE, "
-                    + "password TEXT, "
-                    + "balance INTEGER)");
-            stmt.execute("CREATE TABLE category ("
-                    + "id INTEGER PRIMARY KEY, "
-                    + "name TEXT UNIQUE)");
-            stmt.execute("CREATE TABLE expense ("
-                    + "id INTEGER PRIMARY KEY, "
-                    + "user_id INTEGER, "
-                    + "amount INTEGER, "
-                    + "description TEXT,"
-                    + "category_id INTEGER)");
+            }
         }
     }
 
@@ -86,28 +87,35 @@ public class Database {
      *
      * @param name of the table
      * @return true if table exists
-     * @throws SQLException
      */
-    public boolean tableExists(String name) throws SQLException {
-        Statement stmt = db.createStatement();
-        ResultSet res = stmt.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='" + name + "'");
-
+    public boolean tableExists(String name) {
         boolean result = false;
-        while (res.next()) {
-            result = !res.getString("name").isBlank();
-        }
+        try {
+            Statement stmt = db.createStatement();
+            ResultSet res = stmt.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='" + name + "'");
 
+            while (res.next()) {
+                result = !res.getString("name").isBlank();
+            }
+
+            return result;
+        } catch (SQLException e) {
+
+        }
         return result;
     }
 
     /**
-     * Deletes the whole database. Mostly for deleting test database.
-     * 
-     * @throws IOException
+     * Deletes the whole database. Mostly for deleting test databases.
+     *
      */
-    public void delete() throws IOException {
-        File databaseFile = new File(databaseName);
-        Path path = databaseFile.toPath();
-        Files.delete(path);
+    public void delete() {
+        try {
+            File databaseFile = new File(databaseName);
+            Path path = databaseFile.toPath();
+            Files.delete(path);
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }

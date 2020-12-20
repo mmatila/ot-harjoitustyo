@@ -38,20 +38,4 @@ public class Expense {
     public String getDescription() {
         return this.description;
     }
-    
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-    
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-    
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

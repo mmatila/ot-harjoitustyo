@@ -7,22 +7,33 @@ package budgetingapp.services;
 
 import budgetingapp.dao.CategoryDao;
 import budgetingapp.domain.Category;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  *
  * @author mmatila
  */
 public class CategoryService {
+
     private CategoryDao categoryDao;
-    
+
+    /**
+     * Constructor
+     *
+     * @param categoryDao Data-access-object for categories
+     */
     public CategoryService(CategoryDao categoryDao) {
         this.categoryDao = categoryDao;
     }
-    
-    public String addNewCategory(String name) throws SQLException {
+
+    /**
+     * Adds new category to the database
+     *
+     * @param name Name of the category
+     * @return Success message indicating whether category was added
+     * successfully or not
+     */
+    public String addNewCategory(String name) {
         String message = categoryDao.add(name);
         if (message.equals("Success")) {
             return "Category " + name + " added successfully";
@@ -32,16 +43,32 @@ public class CategoryService {
             return "Could not add category " + name;
         }
     }
-    
-    public Category getById(int id) throws SQLException {
+
+    /**
+     * Returns a category with given id from the database
+     *
+     * @param id Id of the category
+     * @return Category with the id given as a parameter or 'null' if category
+     * was not found
+     */
+    public Category getById(int id) {
         return categoryDao.get(id);
     }
-    
-    public ArrayList<String> getCategories() throws SQLException {
+
+    /**
+     * Returns all existing categories
+     * @return List of category names
+     */
+    public ArrayList<String> getCategories() {
         return categoryDao.getAll();
     }
-    
-    public boolean categoryExists(int id) throws SQLException {
+
+    /**
+     * Checks if a category with given id exists in the database
+     * @param id Id of the category
+     * @return True if category exists. False otherwise
+     */
+    public boolean categoryExists(int id) {
         if (getById(id) != null) {
             return true;
         } else {

@@ -42,6 +42,17 @@ public class ExpenseTest {
         String message = "New expense added";
         assertEquals(message, expenseService.addNewExpense(1, 1.00, "test", 1));
     }
+    
+    @Test
+    public void getExpensesReturnsAllExpensesOfThatCategory() throws SQLException {
+        expenseService.addNewExpense(1, 1.0, "CategoryOneBeer", 1);
+        expenseService.addNewExpense(1, 2.0, "CategoryOneBeerNumberTwo", 1);
+        expenseService.addNewExpense(2, 3.0, "CategoryTwoBeer", 1);
+        expenseService.addNewExpense(2, 4.0, "CategoryTwoBeerNumberTwo", 1);
+        expenseService.addNewExpense(2, 5.0, "CategoryBeerNumberThree", 1);
+        expenseService.addNewExpense(3, 6.0, "CategoryThreeBeer", 1);
+        assertEquals(2, expenseService.getExpenses(1, 1).size());
+    }
 
     @After
     public void tearDown() {

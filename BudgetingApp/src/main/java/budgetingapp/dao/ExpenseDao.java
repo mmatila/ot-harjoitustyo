@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -26,24 +25,26 @@ public class ExpenseDao {
 
     /**
      * Constructor
+     *
      * @param db Database connection
      */
     public ExpenseDao(Connection db) {
         this.db = db;
     }
-    
+
     /**
      * Adds a new expense to the database
+     *
      * @param userId id of user whose expense it is
      * @param amount the expense cost in euros
-     * @param description additional information about the expense. For example "Rent"
+     * @param description additional information about the expense. For example
+     * "Rent"
      * @param categoryId id of the category that the expense belongs to
      * @return "Success" if expense was added successfully. Otherwise "Failure"
-     * @throws SQLException Exception
      */
-    public String add(int userId, double amount, String description, int categoryId) throws SQLException {
-        ps = db.prepareStatement("INSERT INTO expense (user_id, amount, description, category_id) VALUES (?, ?, ?, ?)");
+    public String add(int userId, double amount, String description, int categoryId) {
         try {
+            ps = db.prepareStatement("INSERT INTO expense (user_id, amount, description, category_id) VALUES (?, ?, ?, ?)");
             ps.setInt(1, userId);
             ps.setDouble(2, amount);
             ps.setString(3, description);
@@ -54,11 +55,20 @@ public class ExpenseDao {
             return "Failure";
         }
     }
-    
-    public HashMap<Double, String> getAllByCategoryAndUserId(int categoryId, int userId) throws SQLException {
+
+    /**
+     * Return all expenses that correspond to the category and user given as a
+     * parameter
+     *
+     * @param categoryId Id of the category
+     * @param userId Id of the user
+     * @return Map of expenses that correspond to the category and user given as
+     * a parameter
+     */
+    public HashMap<Double, String> getAllByCategoryAndUserId(int categoryId, int userId) {
         HashMap expenses = new HashMap<Double, String>();
-        ps = db.prepareStatement("SELECT amount, description FROM expense WHERE category_id=(?) AND user_id=(?)");
         try {
+            ps = db.prepareStatement("SELECT * FROM expense WHERE category_id=(?) AND user_id=(?)");
             ps.setInt(1, categoryId);
             ps.setInt(2, userId);
             rs = ps.executeQuery();
@@ -70,5 +80,5 @@ public class ExpenseDao {
         }
         return expenses;
     }
-    
+
 }

@@ -10,7 +10,6 @@ import budgetingapp.services.CategoryService;
 import budgetingapp.services.ExpenseService;
 import budgetingapp.domain.User;
 import budgetingapp.services.UserService;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class TUI {
     private ExpenseService expenseService;
     private User loggedUser;
 
-    public TUI(Database db, UserService userService, CategoryService categoryService, ExpenseService expenseService) throws SQLException {
+    public TUI(Database db, UserService userService, CategoryService categoryService, ExpenseService expenseService) {
         this.scanner = new Scanner(System.in);
         this.db = db;
         this.userService = userService;
@@ -38,7 +37,8 @@ public class TUI {
         this.loggedUser = null;
     }
 
-    public void run() throws SQLException {
+    @SuppressWarnings("MethodLength")
+    public void run() {
         printInfo("");
 
         while (true) {
@@ -86,7 +86,7 @@ public class TUI {
         System.out.print("\nEnter command: ");
     }
 
-    public void handleLogin() throws SQLException {
+    public void handleLogin() {
         if (loggedUser == null) {
             System.out.println("\n--- Welcome back! ---");
             System.out.print("\tUsername: ");
@@ -111,7 +111,7 @@ public class TUI {
         printInfo(userService.handleLogout(choice));
     }
 
-    public void createAccount() throws SQLException {
+    public void createAccount() {
         System.out.println("\n--- Create new user ---");
         System.out.print("\tFirst name: ");
         String firstName = scanner.nextLine();
@@ -127,7 +127,7 @@ public class TUI {
         printInfo(userService.addNewUser(firstName, lastname, username, password, startingBalance));
     }
 
-    public void deleteAccount() throws SQLException {
+    public void deleteAccount() {
         if (isLoggedIn()) {   
             System.out.println("\n--- Delete user ---");
             System.out.print("\tUser do you wish to delete (username): ");
@@ -136,17 +136,18 @@ public class TUI {
         }
     }
 
-    public void addCategory() throws SQLException {
+    public void addCategory() {
         if (isLoggedIn()) {
             System.out.println("\n--- Add new expense category ---");
             printCategoryList("Existing categories:");
+            System.out.println("Leave blank and press [enter] to cancel");
             System.out.print("\tName of the category: ");
             String categoryName = scanner.nextLine();
             printInfo(categoryService.addNewCategory(categoryName));
         }
     }
 
-    public void addExpense() throws SQLException {
+    public void addExpense() {
         if (isLoggedIn()) {
             System.out.println("\n--- Create a new expense ---");
             printCategoryList("All categories:");
@@ -167,7 +168,7 @@ public class TUI {
         }
     }
     
-    public void addIncome() throws SQLException {
+    public void addIncome() {
         if (isLoggedIn()) {
             System.out.println("\n--- Add new income ---");
             System.out.print("\tAmount in euros (eg. 200): ");
@@ -178,7 +179,7 @@ public class TUI {
         }
     }
     
-    public void moreOptions() throws SQLException {
+    public void moreOptions() {
         if (isLoggedIn()) {
             printMoreOptions();
             
@@ -204,7 +205,7 @@ public class TUI {
         System.exit(0);
     }
     
-    public void printCategoryList(String msg) throws SQLException {
+    public void printCategoryList(String msg) {
         System.out.println("");
         System.out.println(msg);
         String message = "";
@@ -218,7 +219,7 @@ public class TUI {
         System.out.println(message);
     }
     
-    public void printExpenses() throws SQLException {
+    public void printExpenses() {
         System.out.println("\n--- List your expenses ---");
         printCategoryList("Select category:");
         System.out.print("\tEnter category number: ");
@@ -231,7 +232,7 @@ public class TUI {
         }
     }
     
-    public void listExpenses(int categoryId, int userId) throws SQLException {
+    public void listExpenses(int categoryId, int userId) {
         System.out.println("");
         String message = "";
         double total = 0;
@@ -240,7 +241,7 @@ public class TUI {
             message = "\n\tNo expenses in this category";
         } else {
             for (Map.Entry<Double, String> entry : expenses.entrySet()) {
-               total += entry.getKey();
+                total += entry.getKey();
                 System.out.println("\t" + entry.getKey() + "€ - " + entry.getValue());
             }
             message = "\nTotal spent on this category: " + String.valueOf(total) + "€";
@@ -249,7 +250,7 @@ public class TUI {
         System.out.print("\nPress [enter] to return to menu");
     }
     
-    public void validateMessage(String message, String username) throws SQLException {
+    public void validateMessage(String message, String username) {
         if (message.contains("logged in")) {
             loggedUser = userService.getUser(username);
         } else if (message.contains("logged out")) {

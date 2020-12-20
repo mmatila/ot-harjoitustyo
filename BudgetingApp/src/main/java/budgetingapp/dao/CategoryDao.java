@@ -26,36 +26,48 @@ public class CategoryDao {
 
     /**
      * Constructor
+     *
      * @param db Database connection
      */
     public CategoryDao(Connection db) {
         this.db = db;
     }
 
-    public String add(String name) throws SQLException {
-        try {
-            ps = db.prepareStatement("INSERT INTO category (name) VALUES (?)");
-            ps.setString(1, name);
-            ps.execute();
-            return "Success";
-        } catch (SQLException e) {
-            if (e.getMessage().contains("UNIQUE")) {
-                return "Exists";
-            }
-            return "Failure";
-        }
-    }
-    
     /**
-     * Returns category from database corresponding to id given as parameter
+     * Adds new category to the database
+     *
+     * @param name Name of the category
+     * @return Success message. "Success" if category was added successfully.
+     * "Exists" if category already exists. "Failure" otherwise
+     */
+    public String add(String name) {
+        String result = "Failure";
+        if (!name.isBlank()) {
+            try {
+                ps = db.prepareStatement("INSERT INTO category (name) VALUES (?)");
+                ps.setString(1, name);
+                ps.execute();
+                result = "Success";
+            } catch (SQLException e) {
+                if (e.getMessage().contains("UNIQUE")) {
+                    result = "Exists";
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns category corresponding to the id given as parameter from the
+     * database
+     *
      * @param id category id
      * @return Category with given id
-     * @throws SQLException Exception
      */
-    public Category get(int id) throws SQLException {
+    public Category get(int id) {
         Category category = null;
-        ps = db.prepareStatement("SELECT * FROM category WHERE id=(?)");
         try {
+            ps = db.prepareStatement("SELECT * FROM category WHERE id=(?)");
             ps.setInt(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -65,27 +77,27 @@ public class CategoryDao {
                 );
             }
         } catch (SQLException e) {
-            
+
         }
         return category;
     }
-    
+
     /**
-     * Returns all categories from database
+     * Returns all categories from the database
+     *
      * @return List of categories
-     * @throws SQLException Exception
      */
-    public ArrayList<String> getAll() throws SQLException {
+    public ArrayList<String> getAll() {
         ArrayList<String> names = new ArrayList<>();
-        ps = db.prepareStatement("SELECT name FROM category");
         try {
+            ps = db.prepareStatement("SELECT name FROM category");
             rs = ps.executeQuery();
             while (rs.next()) {
                 String name = rs.getString("name");
                 names.add(name);
             }
         } catch (SQLException e) {
-            
+
         }
         return names;
     }
