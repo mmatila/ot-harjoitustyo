@@ -8,7 +8,7 @@ A very basic application for one to keep track of their savings and expenses
 
 In the beginning there's only going to be one user role: *standard user.*
 
-## Functionality
+## Functionalities
 
 ### Authentication  
 
@@ -21,29 +21,29 @@ In the beginning there's only going to be one user role: *standard user.*
     
 #### After signing in
   - User gets access to all core functionalities
+    - Deleting existing account
+    - Adding categories
+    - Adding expenses & income
+    - Listing expenses
   
 ### Expense tracking  
 
 - Adding new expenses and categorizing them
   - eg. entertainment, food, transportation... 
   - additional information: "Spotify subscription" or "groceries"
-  
-### Savings tracking  
+  - Listing all expenses and the total amount spent on particular category  
 
-- Adding new savings and categorizing them
-- Listing all existing savings and the total amount spent on particular category
+### Other
 
-### Other  
-
-- Overall balance
-  - Adding new income increases the overall balance
-  - Expenses decrease the balance  
+- Ability to delete authenticated user
     
 ## Further development
-- Family accounts
-  - Shared budget for multiple users
-    - New additional user type with more restricted usage
-- Automated expenses
-  - Rent, streaming services...
-    - Certain day each month
-- Automated savings
+
+The application ended up being a lot simpler that supposed. 
+
+- Deleting expenses
+  - An extra 0 is accidentally included in the expense and needs to be deleted
+- Savings tracking
+  - Use the income/expense ratio to calculate savings rate (%)
+- GUI!!!
+  - Would make the application a lot better even with a simple GUI
