@@ -1,6 +1,6 @@
 # Instructions
 
-Download the file [budgetingapp.jar](https://github.com/mmatila/ot-harjoitustyo/releases/tag/viikko6)
+Download the file [budgetingapp.jar](https://github.com/mmatila/ot-harjoitustyo/releases/download/v1.0/BudgetingApp.jar)
 
 ## Starting the application
 
@@ -23,6 +23,8 @@ Type **2** and press _enter_ to create a new account. Application asks for perso
 
 After logging in to an account, the view is a little different:
 
-<img src="https://github.com/mmatila/ot-harjoitustyo/blob/master/documentation/images/loggedInView.png">
+<img src="https://github.com/mmatila/ot-harjoitustyo/blob/master/documentation/images/authenticatedView.png">
 
-These commands follow the same pattern as logging in or creating a new account. Detailed instructions will be added later
+Now all features can be used by typing in the corresponding number and pressing ```enter```  
+Using the application is very straight forward and each functionality prints out "instructions" when activated.
+

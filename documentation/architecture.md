@@ -16,7 +16,7 @@
 
 ### User interface
 
-Right now the user interface is text-based and contains a few different types of "views" depending on the state of the application. For example user that is logged in has a different view than one who isn't.  
+The user interface is text-based and contains a few different types of "views" depending on the state of the application. For example user that is logged in has a different view than one who isn't.  
 
 TUI.java in budgetingapp.ui package takes care of the user interface. Only a very small amount of application logic is left for the user interface, such as checking if user is logged in or not.
 
@@ -29,7 +29,6 @@ An example of this could be user logging in:
 * userService calls login(username, password) in userDao, which return a success/failure message depending on the correctiveness of inputs
 * userService returns the message to be shown to user based on the response received from userDao  
 
-Some kind of sequence diagram to be added here later on
 
 ### Storing information
 
